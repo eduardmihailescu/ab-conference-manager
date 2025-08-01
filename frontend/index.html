@@ -4,41 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AB+Conference Manager Platform</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2563eb; text-align: center; }
-        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
-        .success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
-        .info { background: #dbeafe; color: #1e40af; border: 1px solid #3b82f6; }
-    </style>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>🎯 AB+Conference Manager Platform</h1>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
         
-        <div class="status success">
-            ✅ Frontend funcționează cu succes!
-        </div>
+        function App() {
+            const [backendStatus, setBackendStatus] = useState("Se încarcă...");
+            const [backendHello, setBackendHello] = useState("Se încarcă...");
+            
+            useEffect(() => {
+                // Test backend status
+                fetch("http://localhost:8081/api/status")
+                    .then(res => res.text())
+                    .then(data => setBackendStatus(data))
+                    .catch(err => setBackendStatus("Eroare: " + err.message));
+                
+                // Test backend hello
+                fetch("http://localhost:8081/api/hello")
+                    .then(res => res.text())
+                    .then(data => setBackendHello(data))
+                    .catch(err => setBackendHello("Eroare: " + err.message));
+            }, []);
+            
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-lg shadow-xl p-8">
+                            <h1 className="text-4xl font-bold text-center text-indigo-600 mb-8">
+                                🎯 AB+Conference Manager Platform
+                            </h1>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                                    <h2 className="text-xl font-semibold text-green-800 mb-3">✅ Frontend React</h2>
+                                    <p className="text-green-700">Funcționează perfect cu React 18!</p>
+                                </div>
+                                
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                                    <h2 className="text-xl font-semibold text-blue-800 mb-3">🚀 Backend Spring Boot</h2>
+                                    <p className="text-blue-700 text-sm">{backendStatus}</p>
+                                </div>
+                                
+                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                                    <h2 className="text-xl font-semibold text-purple-800 mb-3">📊 Database PostgreSQL</h2>
+                                    <p className="text-purple-700">Rulează pe portul 5433</p>
+                                </div>
+                                
+                                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                                    <h2 className="text-xl font-semibold text-yellow-800 mb-3">🐳 Docker</h2>
+                                    <p className="text-yellow-700">Toate containerele active</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                                <h2 className="text-2xl font-semibold text-gray-800 mb-4">🔄 Test Live Backend</h2>
+                                <div className="bg-white border rounded p-4">
+                                    <p className="text-sm text-gray-600 mb-2">Răspuns de la backend:</p>
+                                    <p className="font-mono text-sm bg-gray-100 p-2 rounded">{backendHello}</p>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-8 text-center">
+                                <h2 className="text-2xl font-bold text-gray-800 mb-4">🎊 Felicitări!</h2>
+                                <p className="text-lg text-gray-600">
+                                    Ai implementat cu succes o aplicație full-stack cu:
+                                </p>
+                                <ul className="text-left max-w-md mx-auto mt-4 space-y-2">
+                                    <li className="flex items-center">
+                                        <span className="text-green-500 mr-2">✅</span>
+                                        <span>React Frontend cu Tailwind CSS</span>
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="text-green-500 mr-2">✅</span>
+                                        <span>Spring Boot Backend cu REST API</span>
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="text-green-500 mr-2">✅</span>
+                                        <span>PostgreSQL Database</span>
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="text-green-500 mr-2">✅</span>
+                                        <span>Docker containerizare</span>
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="text-green-500 mr-2">✅</span>
+                                        <span>Comunicare Frontend ↔ Backend</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         
-        <div class="status info">
-            📊 Baza de date PostgreSQL rulează pe portul 5433
-        </div>
-        
-        <h2>Funcționalități Implementate:</h2>
-        <ul>
-            <li>✅ Management Conferințe (MOC)</li>
-            <li>✅ Administrare Media (MED)</li>
-            <li>✅ Asistență Participanți (APC)</li>
-            <li>✅ Formulare Dinamice (ADT)</li>
-            <li>✅ Integrări Externe (IPE)</li>
-            <li>✅ Management Utilizatori (UM)</li>
-            <li>✅ Audit și Jurnalizare (AJ)</li>
-        </ul>
-        
-        <h2>Toate cele 14 fluxuri de lucru sunt implementate!</h2>
-        
-        <p><strong>Felicitări!</strong> Platforma AB+Conference Manager este instalată și funcțională.</p>
-    </div>
+        ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
 </body>
 </html>

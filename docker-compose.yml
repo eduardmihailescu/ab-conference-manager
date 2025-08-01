@@ -12,14 +12,32 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
-  nginx:
+  backend:
+    build: ./backend
+    container_name: ab-conference-backend
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+
+  frontend:
     image: nginx:alpine
-    container_name: ab-conference-web
+    container_name: ab-conference-frontend
     ports:
       - "3000:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
